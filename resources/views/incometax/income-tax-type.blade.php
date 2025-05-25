@@ -1,0 +1,107 @@
+@extends('incometax.layouts.master')
+
+@section('title')
+BELLEVUE - Income Tax Module
+@endsection
+
+@section('sidebar')
+@include('incometax.partials.sidebar')
+@endsection
+
+@section('header')
+@include('incometax.partials.header')
+@endsection
+
+
+
+@section('scripts')
+@include('incometax.partials.scripts')
+@endsection
+
+@section('content')
+<!-- Content -->
+<div class="content">
+    <!-- Animated -->
+    <div class="animated fadeIn">
+        <div class="row" style="border:none;">
+            <div class="col-md-6">
+                <h5 class="card-title">Income Tax Type Master</h5>
+            </div>
+            <div class="col-md-6">
+                <span class="right-brd" style="padding-right:15x;">
+                    <ul class="">
+                        <li><a href="#">Income Tax Type Master</a></li>
+                    </ul>
+                </span>
+            </div>
+        </div>
+        <!-- Widgets  -->
+        <div class="row">
+
+            <div class="main-card">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="aply-lv">
+                            <a href="{{ url('itax/add-income-tax-type') }}" class="btn btn-default">Add New Income
+                                Tax
+                                Type <i class="fa fa-plus"></i></a>
+                        </div>
+                    </div>
+
+                    @include('include.messages')
+
+                    <br />
+                    <div class="clear-fix">
+                        <table id="bootstrap-data-table" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Serial no.</th>
+                                    <th>Income Tax Type Description</th>
+                                    
+                                    <th>Max Amount</th>
+                                    <th>Financial Year</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $i = 1; ?>
+                                @foreach($income_tax as $tax)
+                                <tr>
+                                    <td><?php echo $i++; ?></td>
+                                    <td>{{ $tax->tax_desc }}</td>
+                                    
+                                    <td>{{ $tax->max_amount }}</td>
+                                    <td>{{ $tax->financial_year	 }}</td>
+                                    <td><a href="{{url('itax/edit-income-tax-type/')}}/{{$tax->id}}"><i
+                                                class="ti-pencil-alt"></i></a>
+
+                                        <a href="{{url('itax/del-income-tax-type/')}}/{{$tax->id}}"
+                                            onclick="return confirm('Are you sure you want to delete this Income Tax Type?');"><i
+                                                class="ti-trash"></i></a>
+
+                                    </td>
+                                </tr>
+                                @endforeach
+
+                            </tbody>
+                        </table>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+        <!-- /Widgets -->
+
+
+
+    </div>
+    <!-- .animated -->
+</div>
+<!-- /.content -->
+@endsection
