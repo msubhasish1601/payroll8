@@ -73,8 +73,8 @@ use App\Http\Controllers\Masters\StipendBankController;
 use App\Http\Controllers\Masters\SubCategoryController;
 use App\Http\Controllers\Masters\SupplierController;
 use App\Http\Controllers\Masters\TaxSlabController;
-use App\Http\Controllers\Masters\VDAController;
 use App\Http\Controllers\Masters\TdsController;
+use App\Http\Controllers\Masters\VDAController;
 use App\Http\Controllers\Payroll\BankWisePayslipController;
 use App\Http\Controllers\Payroll\EmployeeWisePayslipController;
 use App\Http\Controllers\Payroll\MonthlySalaryRegisterController;
@@ -87,7 +87,7 @@ use App\Http\Controllers\Projects\TaskController;
 use App\Http\Controllers\Projects\TimesheetsController;
 use App\Http\Controllers\Role\UserAccessRightsController;
 use App\Http\Controllers\Rota\RotaController;
-use App\Http\Controllers\Timesheets\TimesheetController;
+use App\Http\Controllers\Timesheets\TimesheetController as EmployeeCornerTimesheetsController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 
@@ -768,11 +768,11 @@ Route::get('payroll/vw-yearly-bonus', [PayrollGenerationController::class, 'getY
 Route::post('payroll/vw-yearly-bonus', [PayrollGenerationController::class, 'viewYearlyBonus']);
 Route::get('payroll/add-yearly-bonus', [PayrollGenerationController::class, 'addYearlyBonus']);
 Route::post('payroll/add-yearly-bonus', [PayrollGenerationController::class, 'listAddYearlyBonus']);
-Route::post('payroll/save-bonus-all',[PayrollGenerationController::class, 'SaveBonusAll']);
-Route::post('payroll/update-bonus-all',[PayrollGenerationController::class, 'UpdateBonusAll']);
+Route::post('payroll/save-bonus-all', [PayrollGenerationController::class, 'SaveBonusAll']);
+Route::post('payroll/update-bonus-all', [PayrollGenerationController::class, 'UpdateBonusAll']);
 
-Route::get('payroll/yearly-bonus-entry-report',[PtaxEmployeeWiseController::class, 'ViewBonusEntryRepo']);
-Route::post('payroll/yearly-bonus-entry-report',[PtaxEmployeeWiseController::class, 'showBonusEntryRepo']);
+Route::get('payroll/yearly-bonus-entry-report', [PtaxEmployeeWiseController::class, 'ViewBonusEntryRepo']);
+Route::post('payroll/yearly-bonus-entry-report', [PtaxEmployeeWiseController::class, 'showBonusEntryRepo']);
 Route::post('payroll/xls-export-yearly-bonus-entry-report', [PtaxEmployeeWiseController::class, 'bonus_entry_report_xlsexport']);
 
 // Ptax Employee Wise
@@ -858,12 +858,11 @@ Route::post('rota/update-rota', [RotaController::class, 'updateRota']);
 Route::get('rota/delete-rota/{rota_id}', [RotaController::class, 'deleteRota']);
 //******* Routes with Rota end *********//
 
-
 Route::get('payroll/yearly-bonus-report', [PtaxEmployeeWiseController::class, 'ViewBonusCompleteRepo']);
 Route::post('payroll/yearly-bonus-report', [PtaxEmployeeWiseController::class, 'showBonusCompleteRepo']);
 
 Route::get('payroll/yearly-bonus-only-report', [PtaxEmployeeWiseController::class, 'ViewBonusOnlyRepo']);
-Route::post('payroll/yearly-bonus-only-report',[PtaxEmployeeWiseController::class, 'showBonusOnlyRepo']);
+Route::post('payroll/yearly-bonus-only-report', [PtaxEmployeeWiseController::class, 'showBonusOnlyRepo']);
 
 Route::get('payroll/yearly-exgratia-report', [PtaxEmployeeWiseController::class, 'ViewExgratiaOnlyRepo']);
 Route::post('payroll/yearly-exgratia-report', [PtaxEmployeeWiseController::class, 'showExgratiaOnlyRepo']);
@@ -871,9 +870,9 @@ Route::post('payroll/yearly-exgratia-report', [PtaxEmployeeWiseController::class
 //yearly encachments
 Route::get('payroll/vw-yearly-encashment', [PayrollGenerationController::class, 'getYearlyEncash']);
 Route::post('payroll/vw-yearly-encashment', [PayrollGenerationController::class, 'viewYearlyEncash']);
-Route::get('payroll/add-yearly-encashment',[PayrollGenerationController::class, 'addYearlyEncash']);
-Route::post('payroll/add-yearly-encashment',[PayrollGenerationController::class, 'listAddYearlyEncash']);
-Route::post('payroll/save-encashment-all',[PayrollGenerationController::class, 'SaveEncashAll']);
+Route::get('payroll/add-yearly-encashment', [PayrollGenerationController::class, 'addYearlyEncash']);
+Route::post('payroll/add-yearly-encashment', [PayrollGenerationController::class, 'listAddYearlyEncash']);
+Route::post('payroll/save-encashment-all', [PayrollGenerationController::class, 'SaveEncashAll']);
 Route::post('payroll/save-encashment', [PayrollGenerationController::class, 'SaveEncash']);
 
 Route::get('payroll/edit-yearly-encashment/{id}', [PayrollGenerationController::class, 'editYearlyEncash']);
@@ -881,35 +880,35 @@ Route::get('payroll/edit-yearly-encashment/{id}', [PayrollGenerationController::
 Route::post('payroll/update-encashment', [PayrollGenerationController::class, 'UpdateEncash']);
 Route::post('payroll/update-encashment-all', [PayrollGenerationController::class, 'UpdateEncashAll']);
 
-Route::get('payroll/yearly-encashment-entry-report',[PtaxEmployeeWiseController::class, 'ViewEncashEntryRepo']);
-Route::post('payroll/yearly-encashment-entry-report',[PtaxEmployeeWiseController::class, 'showEncashEntryRepo']);
-Route::post('payroll/xls-export-yearly-encash-entry-report',[PtaxEmployeeWiseController::class, 'encash_entry_report_xlsexport']);
+Route::get('payroll/yearly-encashment-entry-report', [PtaxEmployeeWiseController::class, 'ViewEncashEntryRepo']);
+Route::post('payroll/yearly-encashment-entry-report', [PtaxEmployeeWiseController::class, 'showEncashEntryRepo']);
+Route::post('payroll/xls-export-yearly-encash-entry-report', [PtaxEmployeeWiseController::class, 'encash_entry_report_xlsexport']);
 
 //coop
 Route::get('payroll/vw-montly-coop', [PayrollGenerationController::class, 'getMonthlyCoopDeduction']);
-Route::post('payroll/vw-montly-coop',[PayrollGenerationController::class, 'viewMonthlyCoopDeduction']);
+Route::post('payroll/vw-montly-coop', [PayrollGenerationController::class, 'viewMonthlyCoopDeduction']);
 Route::get('payroll/add-montly-coop-all', [PayrollGenerationController::class, 'addMonthlyCoopDeductionAllemployee']);
 Route::post('payroll/vw-add-coop-all', [PayrollGenerationController::class, 'listCoopAllemployee']);
 Route::post('payroll/save-coop-all', [PayrollGenerationController::class, 'SaveCoopAll']);
 Route::post('payroll/update-coop-all', [PayrollGenerationController::class, 'UpdateCoopAll']);
 
 //add process attendance
-Route::get('attendance/add-montly-attendance-data-all',[ProcessAttendanceController::class, 'addMonthlyAttendancePAAllemployee']);
-Route::post('attendance/add-montly-attendance-data-all',[ProcessAttendanceController::class, 'listAttendanceAllemployee']);
-Route::post('attendance/save-montly-attendance-data-all',[ProcessAttendanceController::class, 'SaveAttendanceAllemployee']);
-Route::get('attendance/view-montly-attendance-data-all',[ProcessAttendanceController::class, 'viewMonthlyAttendanceAllemployee']);
+Route::get('attendance/add-montly-attendance-data-all', [ProcessAttendanceController::class, 'addMonthlyAttendancePAAllemployee']);
+Route::post('attendance/add-montly-attendance-data-all', [ProcessAttendanceController::class, 'listAttendanceAllemployee']);
+Route::post('attendance/save-montly-attendance-data-all', [ProcessAttendanceController::class, 'SaveAttendanceAllemployee']);
+Route::get('attendance/view-montly-attendance-data-all', [ProcessAttendanceController::class, 'viewMonthlyAttendanceAllemployee']);
 Route::post('attendance/view-montly-attendance-data-all', [ProcessAttendanceController::class, 'listMonthlyAttendanceAllemployee']);
 Route::post('attendance/update-montly-attendance-data-all', [ProcessAttendanceController::class, 'UpdateAttendanceAllemployee']);
 
-Route::get('attendance/report-monthly-attendance',[ProcessAttendanceController::class, 'reportMonthlyAttendanceAllemployee']);
-Route::post('attendance/report-monthly-attendance',[ProcessAttendanceController::class, 'getMonthlyAttendanceReport']);
-Route::post('attendance/xls-export-attendance-report',[ProcessAttendanceController::class, 'attandence_xlsexport']);
+Route::get('attendance/report-monthly-attendance', [ProcessAttendanceController::class, 'reportMonthlyAttendanceAllemployee']);
+Route::post('attendance/report-monthly-attendance', [ProcessAttendanceController::class, 'getMonthlyAttendanceReport']);
+Route::post('attendance/xls-export-attendance-report', [ProcessAttendanceController::class, 'attandence_xlsexport']);
 
 //incometax
-Route::get('payroll/vw-montly-itax',[PayrollGenerationController::class, 'getMonthlyItaxDeduction']);
+Route::get('payroll/vw-montly-itax', [PayrollGenerationController::class, 'getMonthlyItaxDeduction']);
 Route::post('payroll/vw-montly-itax', [PayrollGenerationController::class, 'viewMonthlyItaxDeduction']);
 Route::get('payroll/add-montly-itax-all', [PayrollGenerationController::class, 'addMonthlyItaxDeductionAllemployee']);
-Route::post('payroll/vw-add-itax-all',[PayrollGenerationController::class, 'listItaxAllemployee']);
+Route::post('payroll/vw-add-itax-all', [PayrollGenerationController::class, 'listItaxAllemployee']);
 Route::post('payroll/save-itax-all', [PayrollGenerationController::class, 'SaveItaxAll']);
 Route::post('payroll/update-itax-all', [PayrollGenerationController::class, 'UpdateItaxAll']);
 
@@ -922,96 +921,96 @@ Route::post('payroll/save-allowances-all', [PayrollGenerationController::class, 
 Route::post('payroll/update-allowances-all', [PayrollGenerationController::class, 'UpdateAllowancesAll']);
 
 //generate all payslips
-Route::get('payroll/vw-all-payslips',[EmployeeWisePayslipController::class, 'getMonthlyPaySlips']);
+Route::get('payroll/vw-all-payslips', [EmployeeWisePayslipController::class, 'getMonthlyPaySlips']);
 Route::post('payroll/vw-all-payslips', [EmployeeWisePayslipController::class, 'getAllPayslips']);
 
 //generate overtime
-Route::get('payroll/vw-montly-overtime',[PayrollGenerationController::class, 'getMonthlyOvertimes']);
+Route::get('payroll/vw-montly-overtime', [PayrollGenerationController::class, 'getMonthlyOvertimes']);
 Route::post('payroll/vw-montly-overtimes', [PayrollGenerationController::class, 'viewMonthlyOvertimes']);
-Route::get('payroll/add-montly-overtimes',[PayrollGenerationController::class, 'addMonthlyOvertimesAllemployee']);
-Route::post('payroll/vw-add-overtimes-all',[PayrollGenerationController::class, 'listOvertimesAllemployee']);
+Route::get('payroll/add-montly-overtimes', [PayrollGenerationController::class, 'addMonthlyOvertimesAllemployee']);
+Route::post('payroll/vw-add-overtimes-all', [PayrollGenerationController::class, 'listOvertimesAllemployee']);
 Route::post('payroll/save-overtimes-all', [PayrollGenerationController::class, 'SaveOvertimesAll']);
-Route::post('payroll/update-overtimes-all',[PayrollGenerationController::class, 'UpdateOvertimesAll']);
+Route::post('payroll/update-overtimes-all', [PayrollGenerationController::class, 'UpdateOvertimesAll']);
 
 //******* Routes with Finance & Accounts end *********//
 
 //Group Name
 Route::get('masters/group-name', [GroupNameController::class, 'getGroupName']);
 Route::get('masters/add-group-name', [GroupNameController::class, 'addGroupName']);
-Route::post('masters/save-group-name',[GroupNameController::class, 'saveGroupName']);
-Route::get('masters/edit-group-name/{id}',[GroupNameController::class, 'editGroupName']);
-Route::post('masters/update-group-name',[GroupNameController::class, 'updateGroupName']);
-Route::get('masters/del-group-name/{id}',[GroupNameController::class, 'deleteGroupName']);
+Route::post('masters/save-group-name', [GroupNameController::class, 'saveGroupName']);
+Route::get('masters/edit-group-name/{id}', [GroupNameController::class, 'editGroupName']);
+Route::post('masters/update-group-name', [GroupNameController::class, 'updateGroupName']);
+Route::get('masters/del-group-name/{id}', [GroupNameController::class, 'deleteGroupName']);
 //******* Routes with Master end *********//
 
 //******* Routes with Payroll report start *********//
-Route::get('payroll/paycart',[EmployeeWisePayslipController::class, 'getEmployeePayCart']);
+Route::get('payroll/paycart', [EmployeeWisePayslipController::class, 'getEmployeePayCart']);
 Route::post('payroll/paycart', [EmployeeWisePayslipController::class, 'showEmployeePayCart']);
 
-Route::get('payroll/paycard',[EmployeeWisePayslipController::class, 'getEmployeePayCard']);
-Route::post('payroll/paycard',[EmployeeWisePayslipController::class, 'showEmployeePayCard']);
+Route::get('payroll/paycard', [EmployeeWisePayslipController::class, 'getEmployeePayCard']);
+Route::post('payroll/paycard', [EmployeeWisePayslipController::class, 'showEmployeePayCard']);
 
-Route::get('payroll/vw-employeewise-view-payslip',[EmployeeWisePayslipController::class, 'getEmployeeWisePayslip']);
+Route::get('payroll/vw-employeewise-view-payslip', [EmployeeWisePayslipController::class, 'getEmployeeWisePayslip']);
 Route::post('payroll/vw-employeewise-view-payslip', [EmployeeWisePayslipController::class, 'showEmployeeWisePayslip']);
 
-Route::get('payroll/vw-salary-register',[MonthlySalaryRegisterController::class, 'getMonthlySalaryRegister']);
-Route::post('payroll/view-salary-register',[MonthlySalaryRegisterController::class, 'viewMonthlySalarySummary']);
+Route::get('payroll/vw-salary-register', [MonthlySalaryRegisterController::class, 'getMonthlySalaryRegister']);
+Route::post('payroll/view-salary-register', [MonthlySalaryRegisterController::class, 'viewMonthlySalarySummary']);
 
-Route::get('payroll/vw-bank-statement',[BankWisePayslipController::class, 'getBankWisePayslip']);
+Route::get('payroll/vw-bank-statement', [BankWisePayslipController::class, 'getBankWisePayslip']);
 Route::post('payroll/vw-bank-statement', [BankWisePayslipController::class, 'showBankWiseStatement']);
 Route::post('payroll/view-bank-statement', [BankWisePayslipController::class, 'viewBankStatement']);
-Route::post('payroll/xls-export-bank-statement',[BankWisePayslipController::class, 'xlsExportBankStatement']);
-Route::get('payroll/salary-statement',[PtaxEmployeeWiseController::class, 'ViewSalaryStatement']);
+Route::post('payroll/xls-export-bank-statement', [BankWisePayslipController::class, 'xlsExportBankStatement']);
+Route::get('payroll/salary-statement', [PtaxEmployeeWiseController::class, 'ViewSalaryStatement']);
 Route::post('payroll/salary-statement', [PtaxEmployeeWiseController::class, 'ShowSalaryStatementReport']);
 Route::get('payroll/vw-p-tax-department-wise', [PtaxEmployeeWiseController::class, 'ViewPtaxDeptWise']);
-Route::post('payroll/vw-p-tax-department-wise',[PtaxEmployeeWiseController::class, 'ShowReportPtaxDeptWise']);
+Route::post('payroll/vw-p-tax-department-wise', [PtaxEmployeeWiseController::class, 'ShowReportPtaxDeptWise']);
 Route::get('payroll/vw-gpf-wise', [PtaxEmployeeWiseController::class, 'ViewGpfMonthlyWise']);
 Route::post('payroll/vw-gpf-wise', [PtaxEmployeeWiseController::class, 'ShowReportGpfMonthlyWise']);
-Route::get('payroll/vw-gpf-emplyeewise',[PtaxEmployeeWiseController::class, 'ViewGpfEmployeewise']);
+Route::get('payroll/vw-gpf-emplyeewise', [PtaxEmployeeWiseController::class, 'ViewGpfEmployeewise']);
 Route::post('payroll/vw-gpf-emplyeewise', [PtaxEmployeeWiseController::class, 'ShowReportGpfEmployeewise']);
 Route::get('payroll/payslip/{emp_id}/{pay_dtl_id}', [EmployeeWisePayslipController::class, 'viewPayrollDetails']);
 
-Route::get('payroll/vw-incomtax-all',[PtaxEmployeeWiseController::class, 'ViewIncometaxAll']);
+Route::get('payroll/vw-incomtax-all', [PtaxEmployeeWiseController::class, 'ViewIncometaxAll']);
 Route::post('payroll/vw-incomtax-all', [PtaxEmployeeWiseController::class, 'ShowReportIncomeAll']);
-Route::get('payroll/vw-incometax-emplyeewise',[PtaxEmployeeWiseController::class, 'ViewIncomEmployeewise']);
+Route::get('payroll/vw-incometax-emplyeewise', [PtaxEmployeeWiseController::class, 'ViewIncomEmployeewise']);
 
-Route::post('payroll/vw-incometax-emplyeewise',[PtaxEmployeeWiseController::class, 'ShowReportIncomeEmployeewise']);
+Route::post('payroll/vw-incometax-emplyeewise', [PtaxEmployeeWiseController::class, 'ShowReportIncomeEmployeewise']);
 
-Route::get('payroll/vw-department-summary',[PtaxEmployeeWiseController::class, 'ViewDeptRepoAll']);
-Route::post('payroll/vw-department-summary',[PtaxEmployeeWiseController::class, 'showDeptRepoAll']);
-Route::post('payroll/prn-department-summary',[PtaxEmployeeWiseController::class, 'printDeptRepoAll']);
+Route::get('payroll/vw-department-summary', [PtaxEmployeeWiseController::class, 'ViewDeptRepoAll']);
+Route::post('payroll/vw-department-summary', [PtaxEmployeeWiseController::class, 'showDeptRepoAll']);
+Route::post('payroll/prn-department-summary', [PtaxEmployeeWiseController::class, 'printDeptRepoAll']);
 Route::post('payroll/xls-export-department-summary', [PtaxEmployeeWiseController::class, 'dept_summary_xlsexport']);
 
-Route::get('payroll/vw-deducted-coop-report',[PtaxEmployeeWiseController::class, 'ViewDeductedCoopRepo']);
-Route::post('payroll/vw-deducted-coop-report',[PtaxEmployeeWiseController::class, 'showDeductedCoopRepo']);
-Route::post('payroll/prn-deducted-coop-report',[PtaxEmployeeWiseController::class, 'printDeductedCoopRepo']);
-Route::post('payroll/xls-export-deducted-coop-report',[PtaxEmployeeWiseController::class, 'deducted_coop_xlsexport']);
+Route::get('payroll/vw-deducted-coop-report', [PtaxEmployeeWiseController::class, 'ViewDeductedCoopRepo']);
+Route::post('payroll/vw-deducted-coop-report', [PtaxEmployeeWiseController::class, 'showDeductedCoopRepo']);
+Route::post('payroll/prn-deducted-coop-report', [PtaxEmployeeWiseController::class, 'printDeductedCoopRepo']);
+Route::post('payroll/xls-export-deducted-coop-report', [PtaxEmployeeWiseController::class, 'deducted_coop_xlsexport']);
 
-Route::get('payroll/vw-non-deducted-coop-report',[PtaxEmployeeWiseController::class, 'ViewNonDeductedCoopRepo']);
-Route::post('payroll/vw-non-deducted-coop-report',[PtaxEmployeeWiseController::class, 'showNonDeductedCoopRepo']);
-Route::post('payroll/prn-non-deducted-coop-report',[PtaxEmployeeWiseController::class, 'printNonDeductedCoopRepo']);
-Route::post('payroll/xls-export-non-deducted-coop-report',[PtaxEmployeeWiseController::class, 'non_deducted_coop_xlsexport']);
+Route::get('payroll/vw-non-deducted-coop-report', [PtaxEmployeeWiseController::class, 'ViewNonDeductedCoopRepo']);
+Route::post('payroll/vw-non-deducted-coop-report', [PtaxEmployeeWiseController::class, 'showNonDeductedCoopRepo']);
+Route::post('payroll/prn-non-deducted-coop-report', [PtaxEmployeeWiseController::class, 'printNonDeductedCoopRepo']);
+Route::post('payroll/xls-export-non-deducted-coop-report', [PtaxEmployeeWiseController::class, 'non_deducted_coop_xlsexport']);
 
 Route::get('payroll/vw-misc-recovery-report', [PtaxEmployeeWiseController::class, 'ViewMiscRecoveryRepo']);
-Route::post('payroll/vw-misc-recovery-report',[PtaxEmployeeWiseController::class, 'showMiscRecoveryRepo']);
-Route::post('payroll/prn-misc-recovery-report',[PtaxEmployeeWiseController::class, 'printMiscRecoveryRepo']);
+Route::post('payroll/vw-misc-recovery-report', [PtaxEmployeeWiseController::class, 'showMiscRecoveryRepo']);
+Route::post('payroll/prn-misc-recovery-report', [PtaxEmployeeWiseController::class, 'printMiscRecoveryRepo']);
 Route::post('payroll/xls-export-misc-recovery-report', [PtaxEmployeeWiseController::class, 'misc_recovery_xlsexport']);
 
 Route::get('payroll/monthly-coop-entry-report', [PtaxEmployeeWiseController::class, 'ViewCoopEntryRepo']);
 Route::post('payroll/monthly-coop-entry-report', [PtaxEmployeeWiseController::class, 'showCoopEntryRepo']);
-Route::post('payroll/xls-export-monthly-coop-entry-report',[PtaxEmployeeWiseController::class, 'coop_entry_report_xlsexport']);
+Route::post('payroll/xls-export-monthly-coop-entry-report', [PtaxEmployeeWiseController::class, 'coop_entry_report_xlsexport']);
 
-Route::get('payroll/monthly-incometax-entry-report',[PtaxEmployeeWiseController::class, 'ViewIncometaxEntryRepo']);
-Route::post('payroll/monthly-incometax-entry-report',[PtaxEmployeeWiseController::class, 'showIncometaxEntryRepo']);
+Route::get('payroll/monthly-incometax-entry-report', [PtaxEmployeeWiseController::class, 'ViewIncometaxEntryRepo']);
+Route::post('payroll/monthly-incometax-entry-report', [PtaxEmployeeWiseController::class, 'showIncometaxEntryRepo']);
 Route::post('payroll/xls-export-monthly-incometax-entry-report', [PtaxEmployeeWiseController::class, 'incometax_entry_report_xlsexport']);
 
-Route::get('payroll/monthly-overtime-entry-report',[PtaxEmployeeWiseController::class, 'ViewOvertimeEntryRepo']);
-Route::post('payroll/monthly-overtime-entry-report',[PtaxEmployeeWiseController::class, 'showOvertimeEntryRepo']);
+Route::get('payroll/monthly-overtime-entry-report', [PtaxEmployeeWiseController::class, 'ViewOvertimeEntryRepo']);
+Route::post('payroll/monthly-overtime-entry-report', [PtaxEmployeeWiseController::class, 'showOvertimeEntryRepo']);
 Route::post('payroll/xls-export-monthly-overtime-entry-report', [PtaxEmployeeWiseController::class, 'overtime_entry_report_xlsexport']);
 
-Route::get('payroll/monthly-allowance-entry-report',[PtaxEmployeeWiseController::class, 'ViewAllowanceEntryRepo']);
-Route::post('payroll/monthly-allowance-entry-report',[PtaxEmployeeWiseController::class, 'showAllowanceEntryRepo']);
-Route::post('payroll/xls-export-monthly-allowance-entry-report',[PtaxEmployeeWiseController::class, 'allowance_entry_report_xlsexport']);
+Route::get('payroll/monthly-allowance-entry-report', [PtaxEmployeeWiseController::class, 'ViewAllowanceEntryRepo']);
+Route::post('payroll/monthly-allowance-entry-report', [PtaxEmployeeWiseController::class, 'showAllowanceEntryRepo']);
+Route::post('payroll/xls-export-monthly-allowance-entry-report', [PtaxEmployeeWiseController::class, 'allowance_entry_report_xlsexport']);
 
 //******* Routes with Payroll report end *********//
 
@@ -1024,48 +1023,48 @@ Route::get('rota-dashboard', [RotaController::class, 'RotaDashboard']);
 Route::get('rota/shift-management', [RotaController::class, 'viewshift']);
 Route::get('rota/add-shift-management', [RotaController::class, 'viewAddNewShift']);
 Route::post('rota/save-shift-management', [RotaController::class, 'saveShiftData']);
-Route::get('rota/getEmployeedesigByshiftId/{empid}',[RotaController::class, 'ajaxEmpShift']);
+Route::get('rota/getEmployeedesigByshiftId/{empid}', [RotaController::class, 'ajaxEmpShift']);
 Route::get('rota/edit-shift-management/{id}', [RotaController::class, 'editShift']);
-Route::post('rota/update-shift-management',[RotaController::class, 'updateShiftData']);
+Route::post('rota/update-shift-management', [RotaController::class, 'updateShiftData']);
 
 //Late policy
 Route::get('rota/late-policy', [RotaController::class, 'viewlate']);
 Route::get('rota/add-late-policy', [RotaController::class, 'viewAddNewlate']);
 Route::get('rota/getEmployeedesigBylateId/{empid}', [RotaController::class, 'ajaxEmpShiftLate']);
-Route::post('rota/save-late-policy',[RotaController::class, 'savelateData']);
+Route::post('rota/save-late-policy', [RotaController::class, 'savelateData']);
 Route::get('rota/edit-late-policy/{id}', [RotaController::class, 'editlate']);
 Route::post('rota/update-late-policy', [RotaController::class, 'updatelateData']);
 
 //Day Off
-Route::get('rota/offday',  [RotaController::class, 'viewoffday']);
-Route::get('rota/add-offday',  [RotaController::class, 'viewAddNewoffday']);
+Route::get('rota/offday', [RotaController::class, 'viewoffday']);
+Route::get('rota/add-offday', [RotaController::class, 'viewAddNewoffday']);
 Route::get('rota/edit-offday/{id}', [RotaController::class, 'editoffday']);
 Route::post('rota/save-offday', [RotaController::class, 'saveoffdayData']);
 Route::post('rota/update-offday', [RotaController::class, 'updateoffdayData']);
 
 //Grace Period
-Route::get('rota/grace-period',[RotaController::class, 'viewgrace']);
+Route::get('rota/grace-period', [RotaController::class, 'viewgrace']);
 Route::get('rota/add-grace-period', [RotaController::class, 'viewAddNewgrace']);
 Route::get('rota/edit-grace-period/{id}', [RotaController::class, 'editGrace']);
-Route::post('rota/save-grace-period',  [RotaController::class, 'savegraceData']);
+Route::post('rota/save-grace-period', [RotaController::class, 'savegraceData']);
 Route::post('rota/update-grace-period', [RotaController::class, 'updategraceData']);
 
 //Duty Roster
 Route::get('rota/duty-roster', [RotaController::class, 'viewroster']);
 Route::get('rota/getEmployeedailyattandeaneshightById/{empid}', [RotaController::class, 'ajaxEmpCode']);
-Route::post('rota/add-duty-roster',[RotaController::class, 'saverosterData']);
+Route::post('rota/add-duty-roster', [RotaController::class, 'saverosterData']);
 
 Route::get('rota/add-employee-duty', [RotaController::class, 'viewAddNewemployeeduty']);
 Route::post('rota/save-employee-duty', [RotaController::class, 'saveemployeedutyData']);
 
 Route::get('rota/add-department-duty', [RotaController::class, 'viewAddNewdepartmentduty']);
 Route::post('rota/save-department-duty', [RotaController::class, 'savedepartmentdutyData']);
-Route::get('rota/getEmployeedesigBydutytshiftId/{empid}',[RotaController::class, 'ajaxEmpShiftCode']);
+Route::get('rota/getEmployeedesigBydutytshiftId/{empid}', [RotaController::class, 'ajaxEmpShiftCode']);
 Route::get('rota/getEmployeedailyattandeaneshightdutyById/{empid}', [RotaController::class, 'ajaxRotaEmp']);
 
-Route::get('appleave/leave-status/{employee_id}',[AppemployeeController::class, 'allleavreqe']);
-Route::get('appemployees/attendance-monthwise/{emp_id}/{month_yr}',[AppemployeeController::class, 'viewattendancemonthwise']);
-Route::get('appemployees/view-approved-leave/{emp_id}',[AppemployeeController::class, 'viewapprovedleave']);
+Route::get('appleave/leave-status/{employee_id}', [AppemployeeController::class, 'allleavreqe']);
+Route::get('appemployees/attendance-monthwise/{emp_id}/{month_yr}', [AppemployeeController::class, 'viewattendancemonthwise']);
+Route::get('appemployees/view-approved-leave/{emp_id}', [AppemployeeController::class, 'viewapprovedleave']);
 Route::get('appemployees/daily-attendance/{emp_id}', [AppemployeeController::class, 'viewdailyattendancemonthwise']);
 //******* Routes with Rota end *********//
 
@@ -1079,32 +1078,43 @@ Route::get('projects/edit-clients/{id}', [ClientController::class, 'editClients'
 Route::post('projects/update-clients', [ClientController::class, 'updateClient']);
 
 //Project route
-Route::get('projects/vw-project',[ProjectController::class, 'getProjects']);
-Route::get('projects/add-project',[ProjectController::class, 'addProjects']);
+Route::get('projects/vw-project', [ProjectController::class, 'getProjects']);
+Route::get('projects/add-project', [ProjectController::class, 'addProjects']);
 Route::post('projects/save-project', [ProjectController::class, 'saveProjects']);
-Route::get('projects/edit-project/{id}',[ProjectController::class, 'editProjects']);
-Route::post('projects/update-project',[ProjectController::class, 'updateProjects']);
+Route::get('projects/edit-project/{id}', [ProjectController::class, 'editProjects']);
+Route::post('projects/update-project', [ProjectController::class, 'updateProjects']);
 
 //Resource  route
-Route::get('projects/vw-resource',[ResourceController::class, 'getResource']);
-Route::get('projects/add-resource/{id}',[ResourceController::class, 'addResource']);
+Route::get('projects/vw-resource', [ResourceController::class, 'getResource']);
+Route::get('projects/add-resource/{id}', [ResourceController::class, 'addResource']);
 Route::post('projects/save-resource', [ResourceController::class, 'saveResource']);
-Route::get('projects/edit-resource/{id}',[ResourceController::class, 'editResource']);
-Route::get('projects/delete_resource/{id}',[ResourceController::class, 'deleteResource']);
+Route::get('projects/edit-resource/{id}', [ResourceController::class, 'editResource']);
+Route::get('projects/delete_resource/{id}', [ResourceController::class, 'deleteResource']);
 Route::post('projects/update-resource', [ResourceController::class, 'updateResource']);
-Route::get('projects/delete-resource/{id}',[ResourceController::class, 'deleteResource']);
+Route::get('projects/delete-resource/{id}', [ResourceController::class, 'deleteResource']);
 
 //timesheet view
-Route::get('timesheets/',[TimesheetsController::class, 'view_Timesheet']);
-Route::post('timesheets/',[TimesheetsController::class, 'get_Timesheet']);
+Route::get('timesheets/', [TimesheetsController::class, 'view_Timesheet']);
+Route::post('timesheets/', [TimesheetsController::class, 'get_Timesheet']);
 
 //------Admin routes end-------
 //------Employee login routes start-------
-Route::get('timesheets/view-sheets',[TimesheetsController::class, 'getTimesheets']);
-Route::get('timesheets/add-timesheet',[TimesheetsController::class, 'addTimesheet']);
-Route::post('timesheets/save-timesheet',[TimesheetsController::class, 'saveTimesheet']);
-Route::post('timesheets/add-to-list',[TimesheetsController::class, 'addToList']);
-Route::get('timesheets/remove-from-list/{tsd_id}',[TimesheetsController::class, 'removeFromList']);
+Route::get('timesheets/view-sheets', [EmployeeCornerTimesheetsController::class, 'getTimesheets']);
+Route::get('timesheets/add-timesheet', [EmployeeCornerTimesheetsController::class, 'addTimesheet']);
+Route::post('timesheets/save-timesheet', [EmployeeCornerTimesheetsController::class, 'saveTimesheet']);
+Route::post('timesheets/add-to-list', [EmployeeCornerTimesheetsController::class, 'addToList']);
+Route::get('timesheets/remove-from-list/{tsd_id}', [EmployeeCornerTimesheetsController::class, 'removeFromList']);
+
+// Route::get('timesheets/add-timesheets', 'Timesheets\TimesheetController@addTimesheets');
+// Route::post('timesheets/add-timesheets', 'Timesheets\TimesheetController@saveTimesheets');
+// Route::post('timesheets/save_draft-timesheets', 'Timesheets\TimesheetController@saveTimesheets');
+// Route::post('timesheets/save_draft-timesheets', 'Timesheets\TimesheetController@save_draft');
+// Route::post('timesheets/save_submit-timesheets', 'Timesheets\TimesheetController@save_submit');
+Route::get('timesheets/edit-timesheets/{id}', [EmployeeCornerTimesheetsController::class, 'editTimesheets']);
+Route::get('timesheets/view-timesheets/{id}', [EmployeeCornerTimesheetsController::class, 'viewTimesheets']);
+// Route::post('timesheets/update-timesheets', 'Timesheets\TimesheetController@updateTimesheets');
+// Route::post('timesheets/update-draft-timesheets', 'Timesheets\TimesheetController@updatedraftTimesheets');
+Route::post('timesheets/edit-timesheets/{id}', [EmployeeCornerTimesheetsController::class, 'saveTimesheets']);
 
 //Task route
 Route::get('projects/get-employee-tasks/{employee_id}/{project_id}', [ProjectController::class, 'getProjectTasks']);

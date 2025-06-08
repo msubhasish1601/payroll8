@@ -1,5 +1,4 @@
 <?php
-
 namespace App;
 
 namespace App\Http\Controllers\Leave;
@@ -23,7 +22,7 @@ class LeaveApplyController extends Controller
     //
     public function viewleaveapplication()
     {
-        if (!empty(Session::get('admin'))) {
+        if (! empty(Session::get('admin'))) {
 
             $leave_apply_rs = Leave_apply::all();
             return view('leave/leave-application', compact('leave_apply_rs'));
@@ -34,7 +33,7 @@ class LeaveApplyController extends Controller
 
     public function viewapplyleaveapplication()
     {
-        if (!empty(Session::get('admin'))) {
+        if (! empty(Session::get('admin'))) {
 
             $empid = Session('admin')->employee_id;
 
@@ -44,21 +43,21 @@ class LeaveApplyController extends Controller
 
             $holiday_rs = Holiday::select('from_date', 'to_date', 'day', 'holiday_type')->get();
             // dd($holiday_rs);
-            $email = Session::get('adminusernmae');
+            $email            = Session::get('adminusernmae');
             $data['Roledata'] = Role_authorization::leftJoin('modules', 'role_authorizations.module_name', '=', 'modules.id')
                 ->leftJoin('sub_modules', 'role_authorizations.sub_module_name', '=', 'sub_modules.id')
                 ->leftJoin('module_configs', 'role_authorizations.menu', '=', 'module_configs.id')
                 ->select('role_authorizations.*', 'modules.module_name', 'sub_modules.sub_module_name', 'module_configs.menu_name')
                 ->where('member_id', '=', $email)
                 ->get();
-            $holidays = array();
-            $holiday_type = array();
+            $holidays     = [];
+            $holiday_type = [];
 
             foreach ($holiday_rs as $holiday) {
 
                 if ($holiday->day > '1') {
                     $from_date = \Carbon\Carbon::parse($holiday->from_date);
-                    $to_date = \Carbon\Carbon::parse($holiday->to_date);
+                    $to_date   = \Carbon\Carbon::parse($holiday->to_date);
 
                     $date1 = date_format($from_date, "d-m-Y");
                     $date2 = date_format($to_date, "d-m-Y");
@@ -76,19 +75,19 @@ class LeaveApplyController extends Controller
 
                         $Store = date('Y-m-d', $currentDate);
 
-                        $holidays[] = $Store;
+                        $holidays[]     = $Store;
                         $holiday_type[] = $holiday->holiday_type;
                     }
 
                     // Display the dates in array format
 
                 } elseif ($holiday->day == '1') {
-                    $Store = $holiday->from_date;
-                    $holidays[] = $Store;
+                    $Store          = $holiday->from_date;
+                    $holidays[]     = $Store;
                     $holiday_type[] = $holiday->holiday_type;
                 }
 
-                $data['holiday_array'] = array("holidays" => $holidays, "holiday_type" => $holiday_type);
+                $data['holiday_array'] = ["holidays" => $holidays, "holiday_type" => $holiday_type];
             }
 
             // dd($holiday_array);
@@ -100,21 +99,21 @@ class LeaveApplyController extends Controller
 
     public function holidayLeaveApplyAjax(Request $request)
     {
-        if (!empty(Session::get('admin'))) {
+        if (! empty(Session::get('admin'))) {
 
             // dd($request->all());
             $holidays = $request['holiday']['holidays'];
 
-            $endDate = strtotime($request['to_date']);
+            $endDate   = strtotime($request['to_date']);
             $startDate = strtotime($request['from_date']);
 
             if ($request['leave_type'] == 1) {
-                $days = ($endDate - $startDate) / 86400 + 1;
-                $no_full_weeks = floor($days / 7);
+                $days              = ($endDate - $startDate) / 86400 + 1;
+                $no_full_weeks     = floor($days / 7);
                 $no_remaining_days = fmod($days, 7);
 
                 $the_first_day_of_week = date("N", $startDate);
-                $the_last_day_of_week = date("N", $endDate);
+                $the_last_day_of_week  = date("N", $endDate);
 
                 if ($the_first_day_of_week <= $the_last_day_of_week) {
                     if ($the_first_day_of_week <= 6 && 6 <= $the_last_day_of_week) {
@@ -147,7 +146,7 @@ class LeaveApplyController extends Controller
                 //We subtract the holidays
                 foreach ($holidays as $key => $holiday) {
                     $time_stamp = strtotime($holiday);
-                    $hol_type = $request['holiday']['holiday_type'][$key];
+                    $hol_type   = $request['holiday']['holiday_type'][$key];
                     //If the holiday doesn't fall in weekend
                     if ($startDate <= $time_stamp && $time_stamp <= $endDate && date("N", $time_stamp) != 6 && date("N", $time_stamp) != 7 && $hol_type == 'closed') {
                         $workingDays--;
@@ -166,7 +165,7 @@ class LeaveApplyController extends Controller
 
                 foreach ($holidays as $key => $holiday) {
                     $time_stamp = strtotime($holiday);
-                    $hol_type = $request['holiday']['holiday_type'][$key];
+                    $hol_type   = $request['holiday']['holiday_type'][$key];
                     //If the holiday doesn't fall in weekend
                     if ($startDate <= $time_stamp && $time_stamp <= $endDate && date("N", $time_stamp) != 6 && date("N", $time_stamp) != 7 && $hol_type == 'closed') {
                         $workingDays--;
@@ -182,7 +181,7 @@ class LeaveApplyController extends Controller
 
     public function saveApplyLeaveData(Request $request)
     {
-        if (!empty(Session::get('admin'))) {
+        if (! empty(Session::get('admin'))) {
 
             // dd($request);
             $emp_code = Session('admin')->employee_id;
@@ -212,18 +211,18 @@ class LeaveApplyController extends Controller
             $validator = Validator::make(
                 $request->all(),
                 [
-                    'leave_type' => 'required',
-                    'from_date' => 'required',
-                    'to_date' => 'required',
+                    'leave_type'   => 'required',
+                    'from_date'    => 'required',
+                    'to_date'      => 'required',
                     'leave_inhand' => 'required',
-                    'days' => 'required',
+                    'days'         => 'required',
                 ],
                 [
-                    'leave_type.required' => 'Leave Type Required',
-                    'from_date.required' => 'From Date Required',
-                    'to_date.required' => 'To Date Required',
+                    'leave_type.required'   => 'Leave Type Required',
+                    'from_date.required'    => 'From Date Required',
+                    'to_date.required'      => 'To Date Required',
                     'leave_inhand.required' => 'Leave In Hand required',
-                    'days.required' => 'No. of Days Required',
+                    'days.required'         => 'No. of Days Required',
                 ]
             );
 
@@ -231,10 +230,10 @@ class LeaveApplyController extends Controller
                 return redirect('employee-corner/apply-leave')->withErrors($validator)->withInput();
             }
 
-            $diff = abs(strtotime($request->to_date) - strtotime($request->from_date));
-            $years = floor($diff / (365 * 60 * 60 * 24));
+            $diff   = abs(strtotime($request->to_date) - strtotime($request->from_date));
+            $years  = floor($diff / (365 * 60 * 60 * 24));
             $months = floor(($diff - $years * 365 * 60 * 60 * 24) / (30 * 60 * 60 * 24));
-            $days = (floor(($diff - $years * 365 * 60 * 60 * 24 - $months * 30 * 60 * 60 * 24) / (60 * 60 * 24))) + 1;
+            $days   = (floor(($diff - $years * 365 * 60 * 60 * 24 - $months * 30 * 60 * 60 * 24) / (60 * 60 * 24))) + 1;
 
             if ($request->no_of_leave > $days) {
 
@@ -246,8 +245,8 @@ class LeaveApplyController extends Controller
                 $leave_type = Leave_type::where('id', '=', $request->leave_type)->first();
             }
 
-            if (!empty($request->doc_image)) {
-                $files = $request->file('doc_image');
+            if (! empty($request->doc_image)) {
+                $files    = $request->file('doc_image');
                 $filename = $files->store('emp_doc_folder');
             } else {
 
@@ -256,18 +255,18 @@ class LeaveApplyController extends Controller
             //  $request->leave_inhand;
 
             if ($request->leave_inhand >= $request->no_of_leave) {
-                $data['employee_id'] = $request->employee_id;
-                $data['employee_name'] = $request->employee_name;
+                $data['employee_id']        = $request->employee_id;
+                $data['employee_name']      = $request->employee_name;
                 $data['emp_reporting_auth'] = $report_auth_name;
-                $data['emp_lv_sanc_auth'] = '';
-                $data['date_of_apply'] = $request->date_of_apply;
-                $data['leave_type'] = $request->leave_type;
-                $data['half_cl'] = $request->half_cl;
-                $data['from_date'] = $request->from_date;
-                $data['to_date'] = $request->to_date;
-                $data['no_of_leave'] = $request->days;
-                $data['status'] = "NOT APPROVED";
-                $data['doc_image'] = $filename;
+                $data['emp_lv_sanc_auth']   = '';
+                $data['date_of_apply']      = $request->date_of_apply;
+                $data['leave_type']         = $request->leave_type;
+                $data['half_cl']            = $request->half_cl;
+                $data['from_date']          = $request->from_date;
+                $data['to_date']            = $request->to_date;
+                $data['no_of_leave']        = $request->days;
+                $data['status']             = "NOT APPROVED";
+                $data['doc_image']          = $filename;
                 //dd($data);
                 //print_r($data);
                 $leave_apply = new Leave_apply();
@@ -280,10 +279,10 @@ class LeaveApplyController extends Controller
 
                     $subject = "Leave Application for approval";
 
-                    $data = array(
+                    $data = [
                         'to_salutation' => 'Dear Sir/Madam',
-                        'body_content' => $message,
-                    );
+                        'body_content'  => $message,
+                    ];
 
                     $toemail = $report_auth_email;
                     Mail::send('mailcommon', $data, function ($message) use ($toemail, $subject) {
@@ -320,16 +319,16 @@ class LeaveApplyController extends Controller
 
     public function leaveTypeID($id_leave_type)
     {
-        if (!empty(Session::get('admin'))) {
+        if (! empty(Session::get('admin'))) {
 
-            $empid = Session('admin')->employee_id;
+            $empid       = Session('admin')->employee_id;
             $leaveinhand = Leave_allocation::where('leave_type_id', '=', $id_leave_type)
                 ->where('employee_code', '=', $empid)
                 ->where('month_yr', 'like', '%' . date('Y') . '%')
                 ->orderBy('id', 'DESC')
                 ->first();
 
-            if (!empty($leaveinhand)) {
+            if (! empty($leaveinhand)) {
                 if ($leaveinhand->leave_in_hand > 0) {
 
                     echo $leaveinhand->leave_in_hand;
